@@ -1,8 +1,10 @@
 game_start: 
-	nextreg 0x56, 0x20
+	nextreg $15,%00000011
+	call init_tiles
 
 
-
+	nextreg $56, 0x20
+	
 
 	ld a,NPC_MARGE
     ld (npc_current_type),a
@@ -31,7 +33,6 @@ game_update:
 	ret
 
 game_draw:
-
 	call player_draw
 	call npc_draw
     
@@ -40,3 +41,11 @@ game_draw:
 
 
 WAITING_TIME equ 10000
+
+
+
+
+
+
+
+

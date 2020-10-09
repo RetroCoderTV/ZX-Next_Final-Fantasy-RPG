@@ -5,28 +5,28 @@ bg_y db 0
 
 
 ;0x5B00
-background_start:
-    nextreg $15,%00000011
-
-    nextreg $69,%10000000
-	nextreg $12,$20 
-
-    
-    ret
-
-background_start2:
-    nextreg $12,$23
-    ret
+; background_start:
     
 
-background_update:
-    ; call bg_scroll_y
-    ret
+;     nextreg $69,%10000000
+; 	; nextreg $12,$20 
 
-bg_scroll_y:
-    ; ld a,(bg_y)
-    ; nextreg 0x17,a
+    
+;     ret
 
-    ; inc a
-    ; ld (bg_y),a
-    ret
+; background_start2:
+;     nextreg $12,$23
+;     ret
+    
+
+; background_update:
+;     ; call bg_scroll_y
+;     ret
+
+; bg_scroll_y:
+;     ; ld a,(bg_y)
+;     ; nextreg 0x17,a
+
+;     ; inc a
+;     ; ld (bg_y),a
+;     ret
