@@ -1,13 +1,16 @@
+MAP_ADDRESS equ 0xC000
+
+
 
 init_tiles:
 	call set_palette
-	nextreg $57, $10
-	ld hl,$e000
+	nextreg $56, 0x10
+	ld hl,MAP_ADDRESS
 	ld de,$6000
-	ld bc,2048
+	ld bc,512
 	ldir
 
-	nextreg $6b,%10100001
+	nextreg $6b,%10100000
 	nextreg $6c,0
 	nextreg $6e,$40
 	nextreg $6f,$60
@@ -20,10 +23,10 @@ init_tiles:
 	nextreg $30,a ;tile x offset =0
 	nextreg $31,a ;tile y offset
 
-	nextreg $57, $f
-	ld hl,$e000
+	nextreg $56, 0xF
+	ld hl,MAP_ADDRESS
 	ld de,$4000
-	ld bc,1024*2 
+	ld bc,1024*8
 	ldir
 
     ret
@@ -47,7 +50,6 @@ uploadpal:
 	or a
 	jp nz,uploadpal
 	ret
-
 
 
 
