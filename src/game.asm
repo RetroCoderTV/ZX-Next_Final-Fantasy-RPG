@@ -1,23 +1,15 @@
 game_start: 
-	nextreg $57, 0xe
-	ld b,13 ;SPRITE_COUNT
+	nextreg $56, 14
+	ld b,SPRITE_COUNT
     ld hl,MAP_ADDRESS
     call init_sprites
-
-	nextreg $15,%00000011
-	call init_tiles
-
-
-	
-
-	
-	
 
 	ld a,NPC_MARGE
     ld (npc_current_type),a
 	call npc_start
 
-
+	nextreg $15,%00000011
+	call init_tiles
 
 	call display_dialog_text
 	
