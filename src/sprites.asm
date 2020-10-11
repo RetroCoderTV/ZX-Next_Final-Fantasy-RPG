@@ -1,7 +1,6 @@
-
-	
-	; Sprite Attribute 0
+; Sprite Attribute 0
 ;     X X X X X X X X
+	
 
 ; Sprite Attribute 1
 ;     Y Y Y Y Y Y Y Y
@@ -282,4 +281,4 @@ SPRITE_COUNT equ 13
 	db  $E3, $E3, $E3, $E3, $00, $00, $EE, $EE, $00, $00, $00, $00, $E3, $E3, $E3, $E3;
 	db  $E3, $E3, $E3, $E3, $00, $00, $00, $00, $00, $00, $00, $00, $E3, $E3, $E3, $E3;
 
-	MMU 6,0
+
