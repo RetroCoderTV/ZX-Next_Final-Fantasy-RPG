@@ -4,14 +4,10 @@ game_start:
     ld hl,MAP_ADDRESS
     call init_sprites
 
-	ld a,NPC_MARGE
-    ld (npc_current_type),a
-	call npc_start
-
 	nextreg $15,%00000011
 	call init_tiles
 
-	call display_dialog_text
+	; call display_dialog_text
 	
     ret
 
@@ -20,24 +16,17 @@ game_update:
 	call WaitRasterLine
   	
     call check_keys
-
-
 	call player_update
-	call npc_update
-
 
 
 	ret
 
 game_draw:
 	call player_draw
-	call npc_draw
+
     
 	ret
 
-
-
-WAITING_TIME equ 10000
 
 
 

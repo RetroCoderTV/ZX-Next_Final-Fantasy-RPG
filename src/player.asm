@@ -43,7 +43,6 @@ player_start:
 	ret
 
 player_update:
-
 	ld a,(animation_counter)
 	inc a
 	ld (animation_counter),a
@@ -52,7 +51,7 @@ player_update:
 
 	ld a,(keypressed_A)
 	cp TRUE
-	call z, move_left
+	call z,try_move_left
 
 	ld a,(keypressed_D)
 	cp TRUE
@@ -124,8 +123,6 @@ check_top_edge:
 	ret c
 	jp do_move_up
 
-
-
 move_down:
 	ld hl,py
 	inc hl
@@ -147,82 +144,82 @@ check_bottom_edge:
 
 
 
-; move_right:
-; 	ld hl,px
-; 	inc hl
-; 	ld a,(hl)
-; 	bit 0,a
-; 	jp nz,check_right_edge
-; do_move_right:
-; 	ld hl,(px)
-; 	ld de,PLAYER_SPEED
-; 	add hl,de
-; 	ld (px),hl
-; 	ret
-; check_right_edge:
-; 	dec hl
-; 	ld a,(hl)
-; 	cp 12 ;screen right
-; 	push af
-; 	call nc,tiledworld_scroll_right
-; 	pop af
-; 	ret nc
-; 	jp do_move_right
 
 
-move_left:
-	ld hl,px
-	ld a,(hl)
-	cp 100 ;screen right
-	push af
-	call c,tiledworld_scroll_left
-	pop af
-	ret c
-
+try_move_left:
 	ld hl,(px)
+	ld a,l
+	cp 100
+	jp c,ml_check_msb
+do_move_left:
+	ld hl,(px)
+	ld a,h
+	or l
+	ret z
 	ld de,-PLAYER_SPEED
 	add hl,de
 	ld (px),hl
-
+	ret
+ml_check_msb:
+	ld a,h
+	cp 0
+	jp z,tiledworld_scroll_left
+	jp nz,do_move_left
 	ret
 
-move_right:
-	ld hl,px
-	ld a,(hl)
-	cp 220 ;screen right
-	push af
-	call nc,tiledworld_scroll_right
-	pop af
-	ret nc
 
-	ld hl,(px)
-	ld de,PLAYER_SPEED
-	add hl,de
-	ld (px),hl
 
-	ret
-
-	
 
 
 ; move_left:
-; 	ld hl,px
-; 	inc hl
-; 	ld a,(hl)
-; 	bit 0,a
-; 	jp z,check_left_edge	
-; do_move_left:
 ; 	ld hl,(px)
+; 	ld a,l
+; 	cp 100 ;scroll area left
+; 	push af
+; 	call c,move_left_check_msb
+; 	pop af
+; 	ret c
+; try_move_left:
+; 	ld hl,(px)
+; 	ld a,l
+; 	cp 0
+; 	jp z,move_left_check_msb
+; do_move_left:
 ; 	ld de,-PLAYER_SPEED
 ; 	add hl,de
 ; 	ld (px),hl
 ; 	ret
-; check_left_edge:
-; 	dec hl
-; 	ld a,(hl)
-; 	cp GUTTER+5
-; 	ret c
-; 	jp do_move_left
+; move_left_check_msb:
+; 	ld a,h
+; 	cp 0
+; 	jp nz, tiledworld_scroll_left
+; 	ret
+
+move_right:
+	ld a,(px)
+	cp 220 ;scroll boundary right
+	push af
+	call nc,tiledworld_scroll_right
+	pop af
+	ret nc
+try_move_right:
+	ld hl,(px)
+	ld a,l
+	cp 64-16 ;LowerByte=64 pw=16
+	jp z,move_right_check_msb
+do_move_right:
+	ld de,PLAYER_SPEED
+	add hl,de
+	ld (px),hl
+	ret
+move_right_check_msb:
+	ld a,h
+	cp 0
+	jp z,do_move_right
+	ret
+
+
+
 
 
 animate_player:
