@@ -1,9 +1,10 @@
 py dw 64
-px dw 32
+px dw 128
+
+player_world_x db 0
 
 
-
-PLAYER_SPEED equ 1
+PLAYER_SPEED equ 2
 PLAYER_ATTR_SLOT equ 63
 player_attribute_2 db %00000000
 player_attribute_3 db %11000000
@@ -144,44 +145,84 @@ check_bottom_edge:
 	ret nc
 	jp do_move_down
 
-move_right:
-	ld hl,px
-	inc hl
-	ld a,(hl)
-	bit 0,a
-	jp nz,check_right_edge
-do_move_right:
-	ld hl,(px)
-	ld de,PLAYER_SPEED
-	add hl,de
-	ld (px),hl
-	ret
-check_right_edge:
-	dec hl
-	ld a,(hl)
-	cp 12 ;screen right
-	ret nc
-	jp do_move_right
+
+
+; move_right:
+; 	ld hl,px
+; 	inc hl
+; 	ld a,(hl)
+; 	bit 0,a
+; 	jp nz,check_right_edge
+; do_move_right:
+; 	ld hl,(px)
+; 	ld de,PLAYER_SPEED
+; 	add hl,de
+; 	ld (px),hl
+; 	ret
+; check_right_edge:
+; 	dec hl
+; 	ld a,(hl)
+; 	cp 12 ;screen right
+; 	push af
+; 	call nc,tiledworld_scroll_right
+; 	pop af
+; 	ret nc
+; 	jp do_move_right
 
 
 move_left:
 	ld hl,px
-	inc hl
 	ld a,(hl)
-	bit 0,a
-	jp z,check_left_edge	
-do_move_left:
+	cp 100 ;screen right
+	push af
+	call c,tiledworld_scroll_left
+	pop af
+	ret c
+
 	ld hl,(px)
 	ld de,-PLAYER_SPEED
 	add hl,de
 	ld (px),hl
+
 	ret
-check_left_edge:
-	dec hl
+
+move_right:
+	ld hl,px
 	ld a,(hl)
-	cp GUTTER+5
-	ret c
-	jp do_move_left
+	cp 220 ;screen right
+	push af
+	call nc,tiledworld_scroll_right
+	pop af
+	ret nc
+
+	ld hl,(px)
+	ld de,PLAYER_SPEED
+	add hl,de
+	ld (px),hl
+
+	ret
+
+	
+
+
+; move_left:
+; 	ld hl,px
+; 	inc hl
+; 	ld a,(hl)
+; 	bit 0,a
+; 	jp z,check_left_edge	
+; do_move_left:
+; 	ld hl,(px)
+; 	ld de,-PLAYER_SPEED
+; 	add hl,de
+; 	ld (px),hl
+; 	ret
+; check_left_edge:
+; 	dec hl
+; 	ld a,(hl)
+; 	cp GUTTER+5
+; 	ret c
+; 	jp do_move_left
 
 
 animate_player:
