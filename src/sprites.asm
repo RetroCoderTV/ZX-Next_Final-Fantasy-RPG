@@ -1,7 +1,6 @@
 ; Sprite Attribute 0
 ;     X X X X X X X X
 	
-
 ; Sprite Attribute 1
 ;     Y Y Y Y Y Y Y Y
 
